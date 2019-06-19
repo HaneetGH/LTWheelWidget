@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">WheelWidget</string>
+    <string-array name="dummy">
+        <item>Direction</item>
+        <item>Assign Zone</item>
+        <item>Share Location</item>
+        <item>Engine Cut</item>
+        <item>Anti Theft</item>
+    </string-array>
+
+
+</resources>
