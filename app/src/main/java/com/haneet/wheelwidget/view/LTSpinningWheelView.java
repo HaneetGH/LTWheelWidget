@@ -562,7 +562,7 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
 
         canvas.save();
         canvas.rotate(angle, cx, cy);
-        Drawable d = ContextCompat.getDrawable(getContext(), R.drawable.bd);
+        Drawable d = ContextCompat.getDrawable(getContext(), R.drawable.top_car_rotate_obj);
         d.setBounds((int) left, (int) top, (int) right, (int) bottom);
         d.draw(canvas);
         //canvas.drawArc(rectF, 0, getAnglePerItem(), true, getItemPaint(i));

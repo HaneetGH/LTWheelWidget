@@ -554,11 +554,8 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
             canvas.rotate(angle, cx, cy);
             Drawable d = ContextCompat.getDrawable(getContext(), images[i]);
             d.setBounds((int) left, (int) top, (int) right, (int) bottom);
-
             d.draw(canvas);
-
-            canvas.drawArc(rectF, 0, getAnglePerItem(), true, getItemPaint(i));
-
+          //  canvas.drawArc(rectF, 0, getAnglePerItem(), true, getItemPaint(i));
             canvas.restore();
 
             points[i] = circle.rotate(angle + this.angle, endOfRight, cy);

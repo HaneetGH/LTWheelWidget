@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements LTSpinningWheelVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.coordinate);
+        setContentView(R.layout.coordinatebacm);
         wheelView = (LTSpinningWheelView) findViewById(R.id.wheel);
 
 
