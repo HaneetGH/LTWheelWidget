@@ -19,7 +19,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -27,13 +26,15 @@ import com.haneet.wheelwidget.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.DoubleConsumer;
 
+/**
+ * Created by adefruandta on 3/12/17.
+ */
 
-public class LTSpinningWheelView extends View implements WheelRotation.RotationListener {
+public class SpinningWheelView extends View implements WheelRotation.RotationListener {
 
     // region static attr
-    private Point ResultAngle;
+
     private final static int MIN_COLORS = 3;
 
     private final static float ANGLE = 360f;
@@ -88,6 +89,8 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
     @ColorInt
     private int[] colors;
 
+    private int[] images;
+
     private OnRotationListener onRotationListener;
 
     private boolean onRotationListenerTicket;
@@ -106,22 +109,22 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
 
     // region constructor
 
-    public LTSpinningWheelView(Context context) {
+    public SpinningWheelView(Context context) {
         super(context);
     }
 
-    public LTSpinningWheelView(Context context, AttributeSet attrs) {
+    public SpinningWheelView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initAttrs(attrs);
     }
 
-    public LTSpinningWheelView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SpinningWheelView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initAttrs(attrs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public LTSpinningWheelView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SpinningWheelView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initAttrs(attrs);
     }
@@ -170,16 +173,15 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         if (!circle.contains(x, y)) {
             return false;
         }
-        float dx = 0F;
-        float dy = 0F;
+
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 onRotationListenerTicket = true;
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                dx = x - previousX;
-                dy = y - previousY;
+                float dx = x - previousX;
+                float dy = y - previousY;
 
                 // reverse direction of rotation above the mid-line
                 if (y > circle.getCy()) {
@@ -190,7 +192,7 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
                 if (x < circle.getCx()) {
                     dy = dy * -1;
                 }
-                Log.d("Thetaaa", " " + (dx + " " + dy));
+
                 rotate((dx + dy) * TOUCH_SCALE_FACTOR);
 
                 break;
@@ -198,16 +200,12 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 onRotationListenerTicket = false;
-                onRotationListener.onStopRotation(getSelectedItem());
                 break;
         }
 
         previousX = x;
         previousY = y;
-        mPoint = new Point();
-        mPoint.set((int) previousX, (int) previousY);
-        ResultAngle = mPoint;
-        Log.d("Theta", " " + x + " " + y);
+
         return true;
     }
 
@@ -241,7 +239,7 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         invalidate();
 
         if (onRotationListenerTicket && angle != 0 && onRotationListener != null) {
-            // onRotationListener.onRotation(angle);
+            onRotationListener.onRotation();
             onRotationListenerTicket = false;
         }
     }
@@ -339,6 +337,11 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         invalidate();
     }
 
+    public void setImages(int[] Images) {
+        this.images = Images;
+        invalidate();
+    }
+
     // Set colors with array res
     // Minimal length 3
     public void setColors(@ArrayRes int colorsResId) {
@@ -412,12 +415,6 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         this.onRotationListener = onRotationListener;
     }
 
-   /* public Point getSelectedItem() {
-        Log.d("ACTUAL", getSelectedItem2()+"");
-        getSelectedItem2();
-        return ResultAngle;
-    }*/
-
     public <T> T getSelectedItem() {
         if (circle == null || points == null) {
             return null;
@@ -429,7 +426,6 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         for (int i = 0; i < points.length; i++) {
             if (points[i].x <= cx && cx <= points[(i + 1) % itemSize].x) { // validate point x
                 return (T) items.get(i);
-
             }
         }
 
@@ -523,13 +519,7 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
     }
 
     private void drawCircle(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.TRANSPARENT);
-        canvas.drawPaint(paint);
-        // Use Color.parseColor to define HTML colors
-        paint.setColor(Color.TRANSPARENT);
-        canvas.drawCircle(circle.getCx(), circle.getCy(), circle.getRadius(), paint);
+        canvas.drawCircle(circle.getCx(), circle.getCy(), circle.getRadius(), new Paint());
         drawCircleStroke(canvas);
     }
 
@@ -559,30 +549,23 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         RectF rectF = new RectF(left, top, right, bottom);
 
         float angle = 0;
-
-        canvas.save();
-        canvas.rotate(angle, cx, cy);
-        Drawable d = ContextCompat.getDrawable(getContext(), R.drawable.bd);
-        d.setBounds((int) left, (int) top, (int) right, (int) bottom);
-        d.draw(canvas);
-        //canvas.drawArc(rectF, 0, getAnglePerItem(), true, getItemPaint(i));
-            /*Drawable drawable = ContextCompat.getDrawable(getContext(),R.drawable.tt1);
-            Bitmap icon = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            canvas.drawBitmap(icon,0,0,null);*/
-
-        canvas.restore();
         for (int i = 0; i < getItemSize(); i++) {
+            canvas.save();
+            canvas.rotate(angle, cx, cy);
+            Drawable d = ContextCompat.getDrawable(getContext(), images[i]);
+            d.setBounds((int) left, (int) top, (int) right, (int) bottom);
+
+            d.draw(canvas);
+
+            canvas.drawArc(rectF, 0, getAnglePerItem(), true, getItemPaint(i));
+
+            canvas.restore();
+
             points[i] = circle.rotate(angle + this.angle, endOfRight, cy);
+
             angle += getAnglePerItem();
         }
-        // ResultAngle = circle.rotate(angle + this.angle, endOfRight, cy);
-
-        // ResultAngle = angle + this.angle;
-       // angle += getAnglePerItem();
-        // }
     }
-
-    Point mPoint;
 
     private void drawWheelItems(Canvas canvas) {
         float cx = circle.getCx();
@@ -590,7 +573,6 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
         float radius = circle.getRadius();
         float x = cx - radius + (wheelStrokeRadius * 5);
         float y = cy;
-
         float textWidth = radius - (wheelStrokeRadius * 10);
         TextPaint textPaint = new TextPaint();
         textPaint.set(this.textPaint);
@@ -672,7 +654,7 @@ public class LTSpinningWheelView extends View implements WheelRotation.RotationL
 
     public interface OnRotationListener<T> {
 
-        void onRotation(Point item);
+        void onRotation();
 
         void onStopRotation(T item);
     }

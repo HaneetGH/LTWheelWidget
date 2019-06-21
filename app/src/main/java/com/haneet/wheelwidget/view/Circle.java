@@ -2,6 +2,7 @@ package com.haneet.wheelwidget.view;
 
 import android.graphics.Matrix;
 import android.graphics.Point;
+import android.util.Log;
 
 
 class Circle {
@@ -23,6 +24,7 @@ class Circle {
 
         cx = width / 2f;
         cy = height / 2f;
+
         radius = Math.min(cx, cy);
     }
 
@@ -47,6 +49,7 @@ class Circle {
     public Point rotate(float angle, float x, float y) {
         // This is to onRotate about the Rectangles center
         matrix.setRotate(angle, cx, cy);
+
 
         // Create new float[] to hold the rotated coordinates
         float[] pts = new float[2];

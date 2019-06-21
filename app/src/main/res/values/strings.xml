@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">WheelWidget</string>
     <string-array name="dummy">
-        <item>Direction</item>
-        <item>Assign Zone</item>
         <item>Share Location</item>
-        <item>Engine Cut</item>
+        <item>Assign Zone</item>
+        <item>Direction</item>
         <item>Anti Theft</item>
+        <item>Engine Cut</item>
     </string-array>
+
+
 
 
 </resources>

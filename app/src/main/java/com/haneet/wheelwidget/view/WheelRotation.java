@@ -1,6 +1,7 @@
 package com.haneet.wheelwidget.view;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 class WheelRotation extends CountDownTimer {
 
@@ -47,6 +48,7 @@ class WheelRotation extends CountDownTimer {
 
         if (millisUntilFinished <= thresholdSlow) {
             angle = maxAngle * ((float) millisUntilFinished / (float) duration);
+
             rotationListener.onRotate(angle);
         }
         else if (angle < maxAngle) {
