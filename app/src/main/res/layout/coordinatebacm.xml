@@ -5,7 +5,7 @@
     android:layout_width="345sp"
     android:layout_height="345sp"
     android:layout_gravity="center"
-    android:background="@drawable/disc">
+    android:background="@mipmap/disc">
 
     <ImageView
         android:id="@+id/imageView2"
