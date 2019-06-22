@@ -83,7 +83,7 @@
     <ImageView
         android:id="@+id/direction"
         android:layout_width="40dp"
-        android:layout_height="0dp"
+        android:layout_height="40dp"
         android:layout_marginTop="55dp"
         android:layout_marginBottom="1dp"
         android:src="@drawable/directionicon"
@@ -95,7 +95,7 @@
     <ImageView
         android:id="@+id/share"
         android:layout_width="40dp"
-        android:layout_height="0dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="89dp"
         android:layout_marginRight="89dp"
         android:layout_marginBottom="74dp"
@@ -110,7 +110,7 @@
     <ImageView
         android:id="@+id/enginecut"
         android:layout_width="40dp"
-        android:layout_height="0dp"
+        android:layout_height="40dp"
         android:layout_marginStart="104dp"
         android:layout_marginLeft="104dp"
         android:layout_marginBottom="81dp"
@@ -122,8 +122,8 @@
 
     <ImageView
         android:id="@+id/zone"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="123dp"
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
@@ -136,8 +136,8 @@
 
     <ImageView
         android:id="@+id/antitheft"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="63dp"
         android:layout_marginLeft="63dp"
         android:layout_marginTop="123dp"
